@@ -15,7 +15,7 @@ app.get('/instance', (_, res) => {
       console.error(err);
       res.status(500).json({error: err});
     } else {
-      res.status(200).json({message: `Hello from EC2 instance id: ${data}!\n`});
+      res.status(200).json({message: `Hello from EC2 instance id: ${data}`});
     }
   });
 });
