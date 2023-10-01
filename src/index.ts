@@ -1,14 +1,28 @@
 import express from 'express';
 import http from 'http';
 import { config } from 'dotenv-flow';
+import { config as awsConfig } from 'aws-sdk';
 config({ silent: true });
 import AWS, { MetadataService, AWSError } from 'aws-sdk'; // Import from AWS SDK v3
 
 const metadata = new MetadataService();
 const app = express();
 
+// Configura le credenziali AWS
+awsConfig.update({
+  region: String(process.env.AWS_REGION), // La regione AWS
+  credentials: {
+    accessKeyId: String(process.env.AWS_ACCESS_KEY_ID),
+    secretAccessKey: String(process.env.AWS_SECRET_ACCESS_KEY),
+  }
+});
+
 app.get('/', (_, res) => {
+  console.log(
+    `region ${process.env.AWS_REGION}`
+  );
     res.status(200).json({message: 'I am online. I am a web api to test for EC2 instances'});
+    console.log('ciao');
 })
 
 app.get('/instance', (_, res) => {
@@ -34,12 +48,7 @@ const dotenv = require('dotenv');
 // Carica le variabili di ambiente da un file .env
 dotenv.config();
 
-// Configura le credenziali AWS
-AWS.config.update({
-  region: process.env.AWS_REGION, // La regione AWS
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
+
 
 // Crea un oggetto ELB
 const elbv2 = new AWS.ELBv2({ apiVersion: '2015-12-01' });
