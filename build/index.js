@@ -44,7 +44,7 @@ aws_sdk_1.config.update({
 });
 app.get('/', (_, res) => {
     console.log(`region ${process.env.AWS_REGION}`);
-    res.status(200).json({ message: 'I am online. I am a web api to test for EC2 instances' });
+    res.status(200).json({ message: `I am online. I am a web api to test for EC2 instances region ${process.env.AWS_REGION}` });
     console.log('ciao');
 });
 app.get('/instance', (_, res) => {
