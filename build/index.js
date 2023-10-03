@@ -68,21 +68,19 @@ const dotenv = require('dotenv');
 dotenv.config();
 // Crea un oggetto ELB
 const elbv2 = new aws_sdk_2.default.ELBv2({ apiVersion: '2015-12-01' });
-// Esegui l'interazione con ELB qui, ad esempio, ottenere informazioni sul bilanciatore di carico
-const loadBalancerName = process.env.LOAD_BALANCER_NAME;
-if (loadBalancerName) {
-    const params = {
-        Names: [loadBalancerName],
-    };
-    elbv2.describeLoadBalancers(params, (err, data) => {
-        if (err) {
-            console.error('Errore durante la descrizione del bilanciatore di carico:', err);
-        }
-        else {
-            console.log('Informazioni sul bilanciatore di carico:', data);
-        }
-    });
-}
-else {
-    console.error('Environment variable LOAD_BALANCER_NAME is not defined or is undefined.');
-}
+// // Esegui l'interazione con ELB qui, ad esempio, ottenere informazioni sul bilanciatore di carico
+// const loadBalancerName = process.env.LOAD_BALANCER_NAME;
+// if (loadBalancerName) {
+//   const params = {
+//     Names: [loadBalancerName],
+//   };
+//   elbv2.describeLoadBalancers(params, (err, data) => {
+//     if (err) {
+//       console.error('Errore durante la descrizione del bilanciatore di carico:', err);
+//     } else {
+//       console.log('Informazioni sul bilanciatore di carico:', data);
+//     }
+//   });
+// } else {
+//   console.error('Environment variable LOAD_BALANCER_NAME is not defined or is undefined.');
+// }
