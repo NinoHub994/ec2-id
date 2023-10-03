@@ -59,6 +59,10 @@ const loadBalancerName = process.env.LOAD_BALANCER_NAME;
 if (loadBalancerName) {
   const params = {
     Names: [loadBalancerName],
+    Targets: [
+      { Id: 'i-04a2fdc767beb7422' },
+      { Id: 'i-0678f7725c7cec50d' },
+    ],
   };
 
   elbv2.describeLoadBalancers(params, (err, data) => {
