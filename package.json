@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "set NODE_ENV=development&& tsc&& node build/index.js",
-    "ec2": "export NODE_ENV=development&& tsc&& node build/index.js"
+    "ec2": "export NODE_ENV=development&& node build/index.js"
   },
   "keywords": [],
   "author": "",
