@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,21 +12,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const AWS = __importStar(require("aws-sdk"));
 const express_1 = __importDefault(require("express"));
+const dotenv_flow_1 = require("dotenv-flow");
+const aws_sdk_1 = require("aws-sdk");
+(0, dotenv_flow_1.config)({ silent: true });
+const aws_sdk_2 = __importDefault(require("aws-sdk"));
 const app = (0, express_1.default)();
-// Ottieni l'ID dell'istanza
-const instanceId = process.env.AWS_INSTANCE_ID;
+aws_sdk_1.config.update({
+    credentials: {
+        accessKeyId: String(process.env.ENV_AWS_ACCESS_KEY_ID),
+        secretAccessKey: String(process.env.ENV_AWS_SECRET_KEY),
+    },
+});
+// Ottieni l'ID delle istanze
+const instanceId1 = "i-0a964177723bd7f49";
+const instanceId2 = "i-03d9bc5dd1178ced6";
 // Crea un'istanza di Amazon EC2
-const ec2 = new AWS.EC2({
+const ec2 = new aws_sdk_2.default.EC2({
     region: process.env.AWS_REGION,
 });
-// Crea un endpoint per la richiesta
-const endpoint = `https://ec2.${process.env.AWS_REGION}.amazonaws.com/`;
 // Definisci un gestore di richieste
 app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // Invia l'ID dell'istanza
-    res.json({ instanceId });
+    var _a;
+    try {
+        // Utilizza il metodo describeInstances per ottenere le informazioni sulle istanze
+        const params = {
+            InstanceIds: [instanceId1, instanceId2], // Add more instance IDs if needed
+        };
+        const data = yield ec2.describeInstances(params).promise(); // Use promise() to get a promise
+        // Extract the instance IDs from the response
+        const instanceIds = (_a = data.Reservations) === null || _a === void 0 ? void 0 : _a.map((reservation) => { var _a; return (_a = reservation.Instances) === null || _a === void 0 ? void 0 : _a.map((instance) => instance.InstanceId); });
+        // Invia l'elenco degli ID delle istanze
+        res.json({ instanceIds });
+    }
+    catch (err) {
+        console.error('Errore durante la richiesta EC2:', err);
+        res.status(500).json({ error: 'Errore durante la richiesta EC2' });
+    }
 }));
 // Avvia l'app
 app.listen(3000, () => {

@@ -76,3 +76,5 @@ if (loadBalancerName) {
   console.error('Environment variable LOAD_BALANCER_NAME is not defined or is undefined.');
 }
 
+
+

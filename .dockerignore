@@ -2,8 +2,8 @@ node_modules
 src
 npm-debug.log
 yarn-error.log
-*.log
-*.tsbuildinfo
+.log
+.tsbuildinfo
 .DS_Store
 .vscode
 .git
