@@ -43,38 +43,4 @@ server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-const dotenv = require('dotenv');
-
-// Carica le variabili di ambiente da un file .env
-dotenv.config();
-
-
-
-// Crea un oggetto ELB
-const elbv2 = new AWS.ELBv2({ apiVersion: '2015-12-01' });
-
-// Esegui l'interazione con ELB qui, ad esempio, ottenere informazioni sul bilanciatore di carico
-const loadBalancerName = process.env.LOAD_BALANCER_NAME;
-
-if (loadBalancerName) {
-  const params = {
-    Names: [loadBalancerName],
-    Targets: [
-      { Id: 'i-04a2fdc767beb7422' },
-      { Id: 'i-0678f7725c7cec50d' },
-    ],
-  };
-
-  elbv2.describeLoadBalancers(params, (err, data) => {
-    if (err) {
-      console.error('Errore durante la descrizione del bilanciatore di carico:', err);
-    } else {
-      console.log('Informazioni sul bilanciatore di carico:', data);
-    }
-  });
-} else {
-  console.error('Environment variable LOAD_BALANCER_NAME is not defined or is undefined.');
-}
-
-
 
