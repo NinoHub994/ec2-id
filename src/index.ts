@@ -10,7 +10,7 @@ const app = express();
 
 // Configura le credenziali AWS
 awsConfig.update({
-  region: String(process.env.AWS_REGION), 
+  region: String(process.env.AWS_REGION), // La regione AWS
   credentials: {
     accessKeyId: String(process.env.AWS_ACCESS_KEY_ID),
     secretAccessKey: String(process.env.AWS_SECRET_ACCESS_KEY),
